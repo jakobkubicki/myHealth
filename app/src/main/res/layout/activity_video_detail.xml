@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DrugDetailActivity">
+
+    <EditText
+        android:id="@+id/editTitle"
+        android:layout_width="392dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:hint="@string/enter_title_here"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toTopOf="@+id/save"
+        app:layout_constraintEnd_toStartOf="@+id/checkBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTitle"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="393dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="312dp"
+        android:text="@string/save_changes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/watched"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinner" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox"
+        app:srcCompat="@drawable/placeholder"
+        tools:ignore="ImageContrastCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
