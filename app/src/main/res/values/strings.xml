@@ -2,7 +2,7 @@
     <string name="app_name">myHealth</string>
     <string name="enter_title_here">Enter title here</string>
     <string name="watched">Watched?</string>
-    <string name="save_changes">Save Changes</string>
+    <string name="save_drug">Save Changes</string>
     <string-array name="spinner_array">
         <item>Movie</item>
         <item>TV Show</item>

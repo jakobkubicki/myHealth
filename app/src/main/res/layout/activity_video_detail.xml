@@ -36,7 +36,7 @@
         android:layout_width="393dp"
         android:layout_height="48dp"
         android:layout_marginTop="312dp"
-        android:text="@string/save_changes"
+        android:text="@string/save_drug"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"

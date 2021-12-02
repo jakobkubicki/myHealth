@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,14 +36,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     static final String TAG = "MainActivityTag";
     ActivityResultLauncher<Intent> launcher;
     DrugOpenHelper helper;
+    ArrayList<Drug> apiList = new ArrayList<>();
     CustomAdapter adapter = new CustomAdapter();
+    JSONObject jsonResponse = new JSONObject();
+    JSONObject jSONObject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +72,11 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
         recyclerView.setAdapter(adapter);
 
-        Drug drug2 = new Drug("New Drug", "Description");
-        helper.insertVideo(drug2);
-        adapter.notifyDataSetChanged();
+        getDatabase();
 
-        launcher = registerForActivityResult(
+        launcher = registerForActivityResult( // add drug to user's list
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
@@ -81,157 +96,108 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    public void getDatabase(){
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.GET, "https://api.fda.gov/drug/ndc.json?search=finished:true&limit=10", new Response.Listener<String>() { //you can change here POST/GET
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonResponse = new JSONObject(response);
+                    JSONArray locations = jsonResponse.getJSONArray("results");
+                    for (int i = 0; i < 10; i++) {
+                        jSONObject = locations.getJSONObject(i);
+                        System.out.println(jSONObject);
+                        String name = jSONObject.getString("brand_name");
+                        String desc = "Ingredients: " + jSONObject.getString("generic_name");
+                        Drug newDrug = new Drug(name, desc);
+                        apiList.add(newDrug);
+                        adapter.notifyDataSetChanged();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Volloy Error " + error);
+                Toast.makeText(MainActivity.this, "Network Connection Error...!!!", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.add) {
-            Intent intent = new Intent(MainActivity.this, DrugDetailActivity.class);
-            intent.putExtra("index", adapter.getItemCount() - 1);
-            intent.putExtra("title", "");
-            intent.putExtra("watched", false);
-            intent.putExtra("type", 0);
-            launcher.launch(intent);
-        } else if (id == R.id.trash){
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Delete item")
-                    .setMessage("Are you sure you would like to delete all items?")
-                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            helper.deleteAllContacts();
-                            adapter.notifyDataSetChanged();
-                        }
-                    })
-                    .setNegativeButton("Dismiss", null);
-            builder.show();
-        }
-        return super.onOptionsItemSelected(item);
+        };
+
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        queue.add(request);
     }
 
     class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 
-        boolean multiSelect = false;
-        ActionMode actionMode;
-        ActionMode.Callback callbacks;
-        List<Drug> selectedItems = new ArrayList<>();
-        List<CardView> selectedCards = new ArrayList<>();
-
         class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
             TextView myText1;
-            ImageView myImage1;
-            CardView myCardView1;
+            TextView myText2;
+            TextView myText3;
+
             public CustomViewHolder(@NonNull View itemView) {
                 super(itemView);
-                myCardView1 = itemView.findViewById(R.id.myCardView1);
-                selectedCards.add(myCardView1);
                 myText1 = itemView.findViewById(R.id.myText1);
-                myImage1 = itemView.findViewById(R.id.myImage1);
+                myText2 = itemView.findViewById(R.id. myText2);
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
             }
 
             public void updateView(Drug b) {
                 myText1.setText(b.toString());
-                myImage1.setImageResource(R.drawable.placeholder);
-            }
-
-            public void selectItem(Drug v) {
-                if (multiSelect) {
-                    if (selectedItems.contains(v)) {
-                        selectedItems.remove(v);
-                        myCardView1.setCardBackgroundColor(getResources().getColor(R.color.white));
-                        notifyDataSetChanged();
-                    }
-                    else {
-                        selectedItems.add(v);
-                        myCardView1.setCardBackgroundColor(getResources().getColor(R.color.teal_200));
-                    }
-                    actionMode.setTitle(selectedItems.size() + " item(s) selected");
-                } else {
-                    Intent intent = new Intent(MainActivity.this, DrugDetailActivity.class);
-                    intent.putExtra("index", getAdapterPosition());
-                    intent.putExtra("name", helper.getSelectVideoById(v.getID()).getName());
-                    intent.putExtra("description", helper.getSelectVideoById(v.getID()).getDescription());
-                    launcher.launch(intent);
-                }
+                myText2.setText(b.getDescription());
             }
 
             @Override
             public void onClick(View v) {
-                selectItem(helper.getSelectAllVideos().get(getAdapterPosition()));
+                Intent intent = new Intent(MainActivity.this, DrugDetailActivity.class);
+                intent.putExtra("index", getAdapterPosition());
+                intent.putExtra("title", apiList.get(getAdapterPosition()).getName());
+                intent.putExtra("watched", apiList.get(getAdapterPosition()).getDescription());
+                launcher.launch(intent);
             }
 
             @Override
             public boolean onLongClick(View v) {
                 Log.d(TAG, "onLongClick: ");
-                MainActivity.this.startActionMode(callbacks);
-                selectItem(helper.getSelectAllVideos().get(getAdapterPosition()));
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Delete item")
+                        .setMessage("Are you sure you would like to delete this item?")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                apiList.remove(getAdapterPosition());
+                                notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("Dismiss", null);
+                builder.show();
                 return true;
             }
         }
-
-        public CustomAdapter() {
-            super();
-            callbacks = new ActionMode.Callback() {
-                @Override
-                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                    multiSelect = true;
-                    actionMode = mode;
-                    MenuInflater menuInflater = getMenuInflater();
-                    menuInflater.inflate(R.menu.cam_menu, menu);
-                    return true;
-                }
-
-                @Override
-                public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                    return false;
-                }
-
-                @Override
-                public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.deleteMenuItem:
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle("Delete item")
-                                    .setMessage("Are you sure you would like to delete these items?")
-                                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            if (selectedCards.size() >= 0) {
-                                                for (int j = 0; j < selectedItems.size(); j++) {
-                                                    helper.deleteContactById(selectedItems.get(j).getID());
-                                                }
-                                            }
-                                            mode.finish();
-                                            notifyDataSetChanged();
-                                        }
-                                    })
-                                    .setNegativeButton("Dismiss", null);
-                            builder.show();
-                    }
-                    return false;
-                }
-
-                @Override
-                public void onDestroyActionMode(ActionMode mode) {
-                    multiSelect = false;
-                    for (int i = 0; i < selectedCards.size(); i++){
-                        selectedCards.get(i).setCardBackgroundColor(getResources().getColor(R.color.white));
-                    }
-                    selectedItems.clear();
-                    selectedCards.clear();
-                    notifyDataSetChanged();
-                }
-            };
-        }
-
-
 
         @NonNull
         @Override
@@ -243,13 +209,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-            Drug b = helper.getSelectAllVideos().get(position);
+            Drug b = apiList.get(position);
             holder.updateView(b);
         }
 
         @Override
         public int getItemCount() {
-            return helper.getSelectAllVideos().size();
+            return apiList.size();
         }
     }
 }

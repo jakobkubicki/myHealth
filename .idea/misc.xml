@@ -5,11 +5,12 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.13551165146909827" />
         <entry key="app/src/main/res/layout/activity_video_detail.xml" value="0.907258064516129" />
+        <entry key="app/src/main/res/layout/card_view_list_item.xml" value="0.165" />
         <entry key="app/src/main/res/menu/cam_menu.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.20833333333333334" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
