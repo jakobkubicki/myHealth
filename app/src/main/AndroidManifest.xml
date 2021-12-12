@@ -20,6 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,7 +39,7 @@
             android:exported="true"
             android:label="@string/title_activity_pharm" />
         <activity
-            android:name=".DrugPharmacies"
+            android:name=".DrugList"
             android:exported="false" />
         <activity
             android:name=".DrugDetailActivity"

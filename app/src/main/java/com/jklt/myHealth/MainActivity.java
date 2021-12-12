@@ -96,11 +96,11 @@ public class MainActivity extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        String resultName = data.getStringExtra("newName");
-                        String resultDesc = data.getStringExtra("newDesc");
+                        String resultName = data.getStringExtra("name");
+                        String resultDesc = data.getStringExtra("dosage");
                         int id = data.getIntExtra("_id", 0);
                         Drug drug = new Drug(id, resultName, resultDesc, "");
-                        helper.insertVideo(drug);
+                        helper.insertDrug(drug);
                         adapter.notifyDataSetChanged();
                         Context context = getApplicationContext();
                         CharSequence text = "Successfully saved!";
@@ -176,12 +176,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "add", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.list:
+                Intent intent2 = new Intent(MainActivity.this, DrugList.class);
+                launcher.launch(intent2);
                 Toast.makeText(this, "list", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.currentLocation:
                 Intent intent3 = new Intent(MainActivity.this, PharmActivity.class);
                 launcher.launch(intent3);
                 Toast.makeText(this, "list", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.search:
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -197,8 +201,8 @@ public class MainActivity extends AppCompatActivity {
             public CustomViewHolder(@NonNull View itemView) {
                 super(itemView);
                 myText1 = itemView.findViewById(R.id.myText1);
-                myText2 = itemView.findViewById(R.id. myText2);
-                myText3 = itemView.findViewById(R.id. myText3);
+                myText2 = itemView.findViewById(R.id.myText2);
+                myText3 = itemView.findViewById(R.id.myText3);
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
             }

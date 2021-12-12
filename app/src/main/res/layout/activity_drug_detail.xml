@@ -20,8 +20,8 @@
 
     <EditText
         android:id="@+id/dosage"
-        android:layout_width="66dp"
-        android:layout_height="42dp"
+        android:layout_width="85dp"
+        android:layout_height="44dp"
         android:ems="10"
         android:hint="Dosage"
         android:inputType="textPersonName"

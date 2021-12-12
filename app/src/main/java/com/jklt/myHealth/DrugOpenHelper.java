@@ -37,7 +37,7 @@ public class DrugOpenHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertVideo(Drug drug) {
+    public void insertDrug(Drug drug) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(NAME, drug.getName());
         contentValues.put(DESCRIPTION, drug.getDescription());
@@ -57,7 +57,7 @@ public class DrugOpenHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public ArrayList<Drug> getSelectAllVideos() {
+    public ArrayList<Drug> getSelectAllDrugs() {
         ArrayList<Drug> drugs = new ArrayList<>();
         Cursor cursor = getSelectAllCursor();
         while (cursor.moveToNext()) {
@@ -70,7 +70,7 @@ public class DrugOpenHelper extends SQLiteOpenHelper {
         return drugs;
     }
 
-    public Drug getSelectVideoById(int idParam) {
+    public Drug getSelectDrugById(int idParam) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(DRUGS_TABLE, new String[]{ID,
                         NAME,
@@ -87,7 +87,7 @@ public class DrugOpenHelper extends SQLiteOpenHelper {
         return drug;
     }
 
-    public Boolean deleteContactById(int idParam) {
+    public Boolean deleteDrugById(int idParam) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(DRUGS_TABLE, new String[]{ID,
                         NAME,
@@ -105,7 +105,7 @@ public class DrugOpenHelper extends SQLiteOpenHelper {
     }
 
 
-    public void deleteAllContacts() {
+    public void deleteAllDrugs() {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(DRUGS_TABLE, null, null);
         db.close();

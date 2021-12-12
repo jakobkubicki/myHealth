@@ -4,20 +4,26 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/search"
+        android:icon="@drawable/search"
+        android:title="Search for Drug"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/currentLocation"
         android:icon="@drawable/currentlocation"
-        android:title="add"
+        android:title="Find Pharmacies"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/add"
         android:icon="@drawable/add"
-        android:title="add"
+        android:title="Add Drug to List"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/list"
         android:icon="@drawable/list"
-        android:title="add"
+        android:title="My List"
         app:showAsAction="ifRoom"/>
     </menu>
