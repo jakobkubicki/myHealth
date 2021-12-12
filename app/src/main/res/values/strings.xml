@@ -9,4 +9,5 @@
         <item>Short Film</item>
         <item>Web Video</item>
     </string-array>
+    <string name="title_activity_pharm">PharmActivity</string>
 </resources>

@@ -32,6 +32,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     CustomAdapter adapter = new CustomAdapter();
     JSONObject jsonResponse = new JSONObject();
     JSONObject jSONObject;
+    EditText search;
+    Button searchButton;
 
 
     @Override
@@ -74,7 +78,18 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        getDatabase();
+        search = findViewById(R.id.editTextSearch);
+        searchButton = findViewById(R.id.buttonSearch);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                apiList.clear();
+                adapter.notifyDataSetChanged();
+                getDatabase();
+            }
+        });
 
         launcher = registerForActivityResult( // add drug to user's list
                 new ActivityResultContracts.StartActivityForResult(),
@@ -84,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         String resultName = data.getStringExtra("newName");
                         String resultDesc = data.getStringExtra("newDesc");
                         int id = data.getIntExtra("_id", 0);
-                        Drug drug = new Drug(id, resultName, resultDesc);
+                        Drug drug = new Drug(id, resultName, resultDesc, "");
                         helper.insertVideo(drug);
                         adapter.notifyDataSetChanged();
                         Context context = getApplicationContext();
@@ -97,19 +112,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getDatabase(){
+        String searchText = search.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.GET, "https://api.fda.gov/drug/ndc.json?search=finished:true&limit=10", new Response.Listener<String>() { //you can change here POST/GET
+        StringRequest request = new StringRequest(Request.Method.GET, "https://api.fda.gov/drug/ndc.json?search=generic_name:" + searchText + "&limit=10", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     jsonResponse = new JSONObject(response);
                     JSONArray locations = jsonResponse.getJSONArray("results");
-                    for (int i = 0; i < 10; i++) {
+                    for (int i = 0; i < locations.length(); i++) {
                         jSONObject = locations.getJSONObject(i);
                         System.out.println(jSONObject);
-                        String name = jSONObject.getString("brand_name");
-                        String desc = "Ingredients: " + jSONObject.getString("generic_name");
-                        Drug newDrug = new Drug(name, desc);
+                        String name = jSONObject.getString("generic_name");
+                        String strength = "Form of dosage: " + jSONObject.getString("dosage_form");
+                        String manu = "Manufacturer: " + jSONObject.getString("labeler_name");
+                        Drug newDrug = new Drug(name, strength, manu);
                         apiList.add(newDrug);
                         adapter.notifyDataSetChanged();
                     }
@@ -120,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Volloy Error " + error);
-                Toast.makeText(MainActivity.this, "Network Connection Error...!!!", Toast.LENGTH_SHORT).show();
+                System.out.println("Volley Error " + error);
+                Toast.makeText(MainActivity.this, "Network Connection Error", Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -129,26 +146,45 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 return params;
             }
-
         };
-
         request.setRetryPolicy(new RetryPolicy() {
             @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
+            public int getCurrentTimeout() { return 50000; }
 
             @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
+            public int getCurrentRetryCount() { return 50000; }
 
             @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
+            public void retry(VolleyError error) throws VolleyError { }
         });
         queue.add(request);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        switch(itemId) {
+            case R.id.add:
+                Intent intent = new Intent(MainActivity.this, DrugDetailActivity.class);
+                launcher.launch(intent);
+                Toast.makeText(this, "add", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.list:
+                Toast.makeText(this, "list", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.currentLocation:
+                Intent intent3 = new Intent(MainActivity.this, PharmActivity.class);
+                launcher.launch(intent3);
+                Toast.makeText(this, "list", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
@@ -162,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 super(itemView);
                 myText1 = itemView.findViewById(R.id.myText1);
                 myText2 = itemView.findViewById(R.id. myText2);
+                myText3 = itemView.findViewById(R.id. myText3);
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
             }
@@ -169,33 +206,21 @@ public class MainActivity extends AppCompatActivity {
             public void updateView(Drug b) {
                 myText1.setText(b.toString());
                 myText2.setText(b.getDescription());
+                myText3.setText(b.getManufacturer());
             }
 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DrugDetailActivity.class);
                 intent.putExtra("index", getAdapterPosition());
-                intent.putExtra("title", apiList.get(getAdapterPosition()).getName());
-                intent.putExtra("watched", apiList.get(getAdapterPosition()).getDescription());
+                intent.putExtra("name", apiList.get(getAdapterPosition()).getName());
+                intent.putExtra("strength", apiList.get(getAdapterPosition()).getDescription());
                 launcher.launch(intent);
             }
 
             @Override
             public boolean onLongClick(View v) {
-                Log.d(TAG, "onLongClick: ");
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Delete item")
-                        .setMessage("Are you sure you would like to delete this item?")
-                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                apiList.remove(getAdapterPosition());
-                                notifyDataSetChanged();
-                            }
-                        })
-                        .setNegativeButton("Dismiss", null);
-                builder.show();
-                return true;
+                return false;
             }
         }
 

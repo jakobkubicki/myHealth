@@ -13,16 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 public class DrugDetailActivity extends AppCompatActivity {
 
@@ -33,7 +26,19 @@ public class DrugDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_detail);
+        setContentView(R.layout.activity_drug_detail);
+
+        String importedName = "";
+        String importedDose = "";
+        Intent intent = getIntent();
+        if (intent != null) {
+            importedName = intent.getStringExtra("name");
+            importedDose = intent.getStringExtra("name");
+        }
+
+        EditText name = findViewById(R.id.name);
+
+        name.setText(importedName);
 
         Button backButton = findViewById(R.id.save);
         backButton.setOnClickListener(new View.OnClickListener() {

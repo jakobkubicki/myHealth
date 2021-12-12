@@ -13,24 +13,28 @@ public class Drug {
 
     private String name;
     private String description;
+    private String manufacturer;
     private int id;
 
-    public Drug(int id, String title, String desc) {
+    public Drug(int id, String title, String desc, String manu) {
         this.id = id;
         this.name = title;
         this.description = desc;
+        this.manufacturer = manu;
     }
 
-    public Drug(String title, String paramType) {
+    public Drug(String title, String paramType, String manu) {
         this.id = -1;
         this.name = title;
         this.description = paramType;
+        this.manufacturer = manu;
     }
 
     public Drug() {
         id = -1;
         name = "";
         description = "";
+        manufacturer = "";
     }
 
     @Override
@@ -46,6 +50,10 @@ public class Drug {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
     }
 
     public void setDescription(String newType) { description = newType; }

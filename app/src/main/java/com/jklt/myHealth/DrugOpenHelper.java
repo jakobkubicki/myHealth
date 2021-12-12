@@ -64,7 +64,7 @@ public class DrugOpenHelper extends SQLiteOpenHelper {
             int id = cursor.getInt(0);
             String name = cursor.getString(1);
             String description = cursor.getString(2);
-            Drug drug = new Drug(id, name, description);
+            Drug drug = new Drug(id, name, description, "");
             drugs.add(drug);
         }
         return drugs;
@@ -82,7 +82,7 @@ public class DrugOpenHelper extends SQLiteOpenHelper {
             int id = cursor.getInt(0);
             String name = cursor.getString(1);
             String description = cursor.getString(2);
-            drug = new Drug(id, name, description);
+            drug = new Drug(id, name, description, "");
         }
         return drug;
     }

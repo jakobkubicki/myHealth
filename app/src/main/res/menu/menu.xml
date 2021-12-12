@@ -2,15 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
         xmlns:app="http://schemas.android.com/apk/res-auto">
-        <item
-            android:id="@+id/add"
-            android:icon="@drawable/add"
-            android:title="add"
-            app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/trash"
-        android:icon="@drawable/trash"
+        android:id="@+id/currentLocation"
+        android:icon="@drawable/currentlocation"
+        android:title="add"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/add"
+        android:icon="@drawable/add"
+        android:title="add"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/list"
+        android:icon="@drawable/list"
         android:title="add"
         app:showAsAction="ifRoom"/>
     </menu>
