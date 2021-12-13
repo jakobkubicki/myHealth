@@ -164,9 +164,11 @@ public class MainActivity extends AppCompatActivity {
         String userEmail = user.getEmail();
         // listen for database changes with childeventlistener
         // wire it up!
-        Intent intent = new Intent(MainActivity.this, Messages.class);
-        intent.putExtra("name", userName);
-        intent.putExtra("email", userEmail);
+        //Intent intent = new Intent(MainActivity.this, Messages.class);
+        Intent intent = new Intent(MainActivity.this, Prices.class);
+        intent.putExtra("drug_name","Nexium");
+        //intent.putExtra("name", userName);
+        //intent.putExtra("email", userEmail);
         launcher.launch(intent);
 
     }
