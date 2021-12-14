@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/search"
+        android:title="Search for Drug"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/currentLocation"
+        android:icon="@drawable/currentlocation"
+        android:title="Find Pharmacies"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/add"
+        android:icon="@drawable/add"
+        android:title="Add Drug to List"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/list"
+        android:icon="@drawable/list"
+        android:title="My List"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/price"
+        android:icon="@drawable/list"
+        android:title="Drug Prices"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/message"
+        android:icon="@drawable/list"
+        android:title="Chat with a Doctor"
+        app:showAsAction="ifRoom"/>
+    </menu>
