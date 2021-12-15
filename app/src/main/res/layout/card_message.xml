@@ -19,13 +19,16 @@
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:background="@color/pink"
+            android:padding="2dp"/>
 
         <TextView
             android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:padding="2dp"/>
 
 
     </LinearLayout>

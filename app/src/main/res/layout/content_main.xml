@@ -54,6 +54,7 @@
         android:layout_height="0dp"
         android:transcriptMode="alwaysScroll"
         android:visibility="invisible"
+        android:background="@color/lblue"
         app:layout_constraintBottom_toTopOf="@+id/editText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
