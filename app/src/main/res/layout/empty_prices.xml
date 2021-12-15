@@ -4,13 +4,27 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
+        android:id="@+id/emptyMessage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/empty"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="4dp"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@id/sadFace"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/sadFace"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/sadFace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emptyMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
