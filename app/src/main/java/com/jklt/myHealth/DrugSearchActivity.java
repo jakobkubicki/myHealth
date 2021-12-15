@@ -55,6 +55,8 @@ public class DrugSearchActivity extends AppCompatActivity {
     JSONObject jSONObject;
     EditText search;
     Button searchButton;
+    String email;
+    String userName;
 
 
     @Override
@@ -69,13 +71,26 @@ public class DrugSearchActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+        Intent dataU = getIntent();
+        email = dataU.getStringExtra("email");
+        userName = dataU.getStringExtra("name");
         search = findViewById(R.id.editTextSearch);
         searchButton = findViewById(R.id.buttonSearch);
+        Button viewPrice = findViewById(R.id.viewPrice);
+        viewPrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DrugSearchActivity.this, Prices.class);
+                intent.putExtra("drug_name",search.getText().toString());
+                launcher.launch(intent);
+            }
+        });
 
         searchButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                viewPrice.setVisibility(View.VISIBLE);
                 apiList.clear();
                 adapter.notifyDataSetChanged();
                 getDatabase();
@@ -167,6 +182,8 @@ public class DrugSearchActivity extends AppCompatActivity {
                 return true;
             case R.id.list:
                 Intent intent2 = new Intent(DrugSearchActivity.this, DrugList.class);
+                intent2.putExtra("name",userName);
+                intent2.putExtra("email",email);
                 launcher.launch(intent2);
                 return true;
             case R.id.currentLocation:
@@ -175,11 +192,13 @@ public class DrugSearchActivity extends AppCompatActivity {
                 return true;
             case R.id.price:
                 Intent intent4 = new Intent(DrugSearchActivity.this, Prices.class);
-                intent4.putExtra("drug_name","Nexium");
+                intent4.putExtra("drug_name","");
                 launcher.launch(intent4);
                 return true;
             case R.id.message:
                 Intent intent5 = new Intent(DrugSearchActivity.this, Messages.class);
+                intent5.putExtra("name",userName);
+                intent5.putExtra("email",email);
                 launcher.launch(intent5);
                 return true;
             case R.id.search:

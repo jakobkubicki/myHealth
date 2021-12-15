@@ -32,12 +32,17 @@ public class DrugList extends AppCompatActivity {
     ActivityResultLauncher<Intent> launcher;
     DrugOpenHelper helper;
     CustomAdapter adapter = new CustomAdapter();
+    String username;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drug_list);
 
+        Intent dataU = getIntent();
+        username = dataU.getStringExtra("name");
+        email= dataU.getStringExtra("email");
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         helper = new DrugOpenHelper(this);
 
@@ -92,10 +97,13 @@ public class DrugList extends AppCompatActivity {
                 return true;
             case R.id.price:
                 Intent intent4 = new Intent(DrugList.this, Prices.class);
+                intent4.putExtra("drug_name","");
                 launcher.launch(intent4);
                 return true;
             case R.id.message:
                 Intent intent5 = new Intent(DrugList.this, Messages.class);
+                intent5.putExtra("name",username);
+                intent5.putExtra("email",email);
                 launcher.launch(intent5);
                 return true;
             case R.id.search:

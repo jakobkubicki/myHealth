@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/activity_drug_list.xml" value="0.11231884057971014" />
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/activity_drug_search.xml" value="0.1" />
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/activity_main.xml" value="0.11231884057971014" />
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/activity_maps.xml" value="0.1" />
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/activity_pharm.xml" value="0.1" />
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/card_message.xml" value="0.1" />
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/card_price.xml" value="0.1" />
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/card_view_list_item.xml" value="0.11231884057971014" />
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/content_main.xml" value="0.1" />
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/empty_prices.xml" value="0.2" />
+        <entry key="..\:/Users/Lin/Desktop/Android_dev/myHealth/app/src/main/res/layout/prices_layout.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

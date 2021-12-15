@@ -42,6 +42,7 @@ import java.util.List;
 public class Messages extends AppCompatActivity {
     static final String TAG = "FirebaseFunTag";
 
+
     ActivityResultLauncher<Intent> launcher;
 
     String userName = "Anonymous";
@@ -61,6 +62,8 @@ public class Messages extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
+
 
         Button send = findViewById(R.id.sendButton);
         send.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +115,12 @@ public class Messages extends AppCompatActivity {
 
         chatMessageList = new ArrayList<>();
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void setupFirebase() {

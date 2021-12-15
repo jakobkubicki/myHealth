@@ -43,26 +43,34 @@ public class Prices  extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.prices_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
 
-        Price p1 = new Price(0,"Amazon", 4.49, "https://www.amazon.com", "Advil");
-        Price p2 = new Price(0, "Safeway",7.99,"https://www.safeway.com","Advil");
-        Price p3 = new Price(0,"CVS",12.49,"https://www.cvs.com","Nexium");
-        Price p4 = new Price(0,"Safeway",19.79,"https://www.safeway.com/","Nexium");
 
-          helper.insertPrice(p1);
-          helper.insertPrice(p2);
-          helper.insertPrice(p3);
-          helper.insertPrice(p4);
-          //adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
+        if(helper.getAllPrices().size() == 0){
+            Price p1 = new Price(0,"Amazon", 4.49, "https://www.amazon.com", "Advil");
+            Price p2 = new Price(0, "Safeway",7.99,"https://www.safeway.com","Advil");
+            Price p3 = new Price(0,"CVS",12.49,"https://www.cvs.com","Nexium");
+            Price p4 = new Price(0,"Safeway",19.79,"https://www.safeway.com/","Nexium");
+
+            helper.insertPrice(p1);
+            helper.insertPrice(p2);
+            helper.insertPrice(p3);
+            helper.insertPrice(p4);
+        }
 
         Intent data = getIntent();
         drug_name = data.getStringExtra("drug_name");
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        if((drug_name.compareTo("") == 0) ||(helper.getPricesByDrug(drug_name).size() > 0)){
+            setContentView(R.layout.prices_layout);
+            RecyclerView recyclerView = findViewById(R.id.recyclerView);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(adapter);
+        }else{
+            setContentView(R.layout.empty_prices);
+        }
 
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -74,6 +82,12 @@ public class Prices  extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
@@ -102,9 +116,9 @@ public class Prices  extends AppCompatActivity {
              * @return
              */
             public void updateView(Price p) {
-                drug.setText(p.getDrug());
-                seller.setText(p.getSeller());
-                price.setText(p.getPrice().toString());
+                drug.setText("Drug name: " + p.getDrug());
+                seller.setText("Provider: " + p.getSeller());
+                price.setText("Price: " + p.getPrice().toString() + " USD");
             }
 
             /**
@@ -115,10 +129,17 @@ public class Prices  extends AppCompatActivity {
              */
             @Override
             public void onClick(View v) {
-                Price p = helper.getPricesByDrug(drug_name).get(getAdapterPosition());
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(p.getWebsite()));
-                startActivity(i);
+                if(drug_name.compareTo("") == 0){
+                    Price p = helper.getAllPrices().get(getAdapterPosition());
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(p.getWebsite()));
+                    startActivity(i);
+                }else{
+                    Price p = helper.getPricesByDrug(drug_name).get(getAdapterPosition());
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(p.getWebsite()));
+                    startActivity(i);
+                }
             }
 
         }
@@ -145,10 +166,15 @@ public class Prices  extends AppCompatActivity {
          */
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-            Log.d(TAG,""+position);
-            Price p = helper.getPricesByDrug(drug_name).get(position);
-            if(p.getDrug().compareTo(drug_name) == 0){
+            if(drug_name.compareTo("") == 0){
+                Price p = helper.getAllPrices().get(position);
                 holder.updateView(p);
+            }else{
+                Log.d(TAG,""+position);
+                Price p = helper.getPricesByDrug(drug_name).get(position);
+                if(p.getDrug().compareTo(drug_name) == 0){
+                    holder.updateView(p);
+                }
             }
         }
 
@@ -161,7 +187,9 @@ public class Prices  extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-
+            if(drug_name.compareTo("") == 0){
+                return helper.getAllPrices().size();
+            }
             return getDrugCount(drug_name);
         }
 

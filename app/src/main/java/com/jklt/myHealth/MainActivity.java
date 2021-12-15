@@ -147,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
         //Intent intent = new Intent(MainActivity.this, Messages.class);
         Intent intent = new Intent(MainActivity.this, DrugSearchActivity.class);
         //.putExtra("drug_name","Nexium");
-        //intent.putExtra("name", userName);
-        //intent.putExtra("email", userEmail);
+        intent.putExtra("name", userName);
+        intent.putExtra("email", userEmail);
         launcher.launch(intent);
 
     }
