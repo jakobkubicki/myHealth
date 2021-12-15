@@ -103,7 +103,8 @@ public class DrugSearchActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         String resultName = data.getStringExtra("name");
-                        String resultDesc = data.getStringExtra("dosage");
+                        String resultDesc = data.getStringExtra("dose");
+                        System.out.println(resultDesc);
                         int id = data.getIntExtra("_id", 0);
                         Drug drug = new Drug(id, resultName, resultDesc, "");
                         helper.insertDrug(drug);
@@ -185,10 +186,6 @@ public class DrugSearchActivity extends AppCompatActivity {
                 intent2.putExtra("name",userName);
                 intent2.putExtra("email",email);
                 launcher.launch(intent2);
-                return true;
-            case R.id.currentLocation:
-                Intent intent3 = new Intent(DrugSearchActivity.this, PharmActivity.class);
-                launcher.launch(intent3);
                 return true;
             case R.id.price:
                 Intent intent4 = new Intent(DrugSearchActivity.this, Prices.class);

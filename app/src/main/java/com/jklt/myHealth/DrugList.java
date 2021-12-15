@@ -57,7 +57,8 @@ public class DrugList extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         String resultName = data.getStringExtra("name");
-                        String resultDesc = data.getStringExtra("dosage");
+                        String resultDesc = data.getStringExtra("dose");
+                        System.out.println(resultDesc);
                         int id = data.getIntExtra("_id", 0);
                         Drug drug = new Drug(id, resultName, resultDesc, "");
                         helper.insertDrug(drug);
@@ -91,10 +92,6 @@ public class DrugList extends AppCompatActivity {
                 Intent intent2 = new Intent(DrugList.this, DrugList.class);
                 launcher.launch(intent2);
                 return true;
-            case R.id.currentLocation:
-                Intent intent3 = new Intent(DrugList.this, PharmActivity.class);
-                launcher.launch(intent3);
-                return true;
             case R.id.price:
                 Intent intent4 = new Intent(DrugList.this, Prices.class);
                 intent4.putExtra("drug_name","");
@@ -107,6 +104,8 @@ public class DrugList extends AppCompatActivity {
                 launcher.launch(intent5);
                 return true;
             case R.id.search:
+                Intent intent6 = new Intent(DrugList.this, DrugSearchActivity.class);
+                launcher.launch(intent6);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -136,7 +135,8 @@ public class DrugList extends AppCompatActivity {
 
             public void updateView(Drug b) {
                 myText1.setText(b.getName());
-                myText2.setText(b.getDescription());
+                //System.out.println(b.getDescription());
+                myText2.setText(b.getDescription() + "  mg");
             }
 
             public void selectItem(Drug v) {

@@ -10,12 +10,6 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/currentLocation"
-        android:icon="@drawable/currentlocation"
-        android:title="Find Pharmacies"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/add"
         android:icon="@drawable/add"
         android:title="Add Drug to List"

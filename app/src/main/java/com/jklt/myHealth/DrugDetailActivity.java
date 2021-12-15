@@ -76,7 +76,6 @@ public class DrugDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                System.out.println(importedDose);
                 intent.putExtra("name", importedName);
                 intent.putExtra("dose", importedDose);
                 DrugDetailActivity.this.setResult(DrugList.RESULT_OK, intent);
